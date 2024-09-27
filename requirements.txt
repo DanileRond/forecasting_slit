@@ -1,6 +1,7 @@
 streamlit
 numpy==1.23.5
-prophet==1.1.1
 cmdstanpy==1.1.0
 plotly==5.15.0
 pandas==1.5.3
+holidays==0.24
+prophet==1.1.2
