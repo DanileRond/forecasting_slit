@@ -1,3 +1,6 @@
+pip install streamlit==1.38.0
+pip install numpy==1.23.5
+pip install prophet==1.1.4
 import streamlit as st
 import pandas as pd
 from prophet import Prophet
