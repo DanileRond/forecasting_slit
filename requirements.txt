@@ -1,4 +1,3 @@
-pandas==1.5.3
 numpy
 prophet
 cmdstanpy==1.1.0
