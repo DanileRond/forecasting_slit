@@ -8,9 +8,38 @@ import numpy as np
 def load_data(uploaded_file):
     data = pd.read_csv(uploaded_file)[['ds','y']]
     return data
+def objective(trial):
+    
+    params = {
+        'changepoint_prior_scale': trial.suggest_float('changepoint_prior_scale', 0.005, 5),
+        'changepoint_range': trial.suggest_float('changepoint_range', 0.01, 0.99),
+        'seasonality_prior_scale': trial.suggest_float('seasonality_prior_scale', 0.1, 10),
+        'holidays_prior_scale': trial.suggest_float('holidays_prior_scale', 0.1, 10),
+        'seasonality_mode': trial.suggest_categorical('seasonality_mode', ['multiplicative', 'additive']),
+
+    }
+    
+    model = Prophet(**params)
+    model.add_country_holidays(country_name='ES')
+    model.fit(data)
+    
+    df_cv = cross_validation(model,
+                        initial= "730 days", 
+                        period= "365 days", 
+                        horizon= "365 days",
+                        parallel= "processes")    
+    df_perf_metrics = performance_metrics(df_cv, metrics=["smape"], rolling_window= 0.1)
+    smape_score = df_perf_metrics.agg({"smape": "mean"}).item()
+    
+    return smape_score
 
 def forecast_data(data, periods):
     data.columns = ['ds', 'y']  # Prophet expects 'ds' and 'y'
+    study = optuna.create_study(direction='minimize')
+    study.optimize(objective, n_trials=10)
+    best_params = study.best_params
+
+
     model = Prophet()
     model.fit(data)
 
