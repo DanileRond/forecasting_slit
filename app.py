@@ -39,8 +39,8 @@ def forecast_data_autotide(data, periods):
 
     # Preparing data for NeuralForecast which expects 'ds' and 'y' columns
     data = data.rename(columns={'Date': 'ds', 'Value': 'y'})
-
-    forecast = fcst.cross_validation(data.drop(columns=['unique_id'], inplace = True), n_windows=1, step_size=periods, refit=True)
+    data['unique_id'] = 'series1'  # Assign a constant value to all rows
+    forecast = fcst.cross_validation(data, n_windows=1, step_size=periods, refit=True)
     return forecast, model
 
 # Main app
