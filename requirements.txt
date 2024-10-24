@@ -1,5 +1,6 @@
 numpy
 prophet
+neuralforecast
 cmdstanpy==1.1.0
 plotly==5.15.0
 streamlit
