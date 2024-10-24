@@ -4,6 +4,7 @@ from prophet import Prophet
 from prophet.plot import plot_plotly, plot_cross_validation_metric
 from prophet.diagnostics import cross_validation, performance_metrics
 import plotly.graph_objects as go
+import itertools
 
 # Function to load data
 def load_data(uploaded_file):
